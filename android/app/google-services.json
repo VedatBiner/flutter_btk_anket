@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "925158548657",
+    "project_id": "anket-8bda5",
+    "storage_bucket": "anket-8bda5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925158548657:android:9906e2493d83197dd7ae90",
+        "android_client_info": {
+          "package_name": "com.example.flutter_btk_anket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925158548657-i9opv347cfgkjmedi3hpes5679gd712a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_btk_anket",
+            "certificate_hash": "ebd8ee2ffffe33394fd6e0bed6e95838a98164fe"
+          }
+        },
+        {
+          "client_id": "925158548657-om53q96e4vb9k400f63k5a082cnshk67.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAunvSHbrKk4exsl01qoTBgouv_NcGtWeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925158548657-om53q96e4vb9k400f63k5a082cnshk67.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
