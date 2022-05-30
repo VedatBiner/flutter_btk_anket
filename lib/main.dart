@@ -4,16 +4,18 @@
 // sonuç olarak bu kod hatalı.
 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MyApp()
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,21 +43,31 @@ class SurveyList extends StatefulWidget{
 }
 
 class SurveyListState extends State{
+  final firebaseInstance = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
-    return buildBody(context, sahteSnapshot);
+    
+    return StreamBuilder<dynamic>(
+      stream: firebaseInstance.collection("dilanketi").snapshots(),
+      builder: (context, snapshot){
+        if (!snapshot.hasData){
+          return const LinearProgressIndicator();
+        } else {
+          return buildBody(context, snapshot.data?.documents);
+        }
+      },
+    );
   }
 
-  Widget buildBody(BuildContext context, List<Map<String, Object>> snapshot) {
+  Widget buildBody(BuildContext context, List<DocumentSnapshot> snapshot) {
     return  ListView (
       padding: const EdgeInsets.only(top: 20.0),
       children: snapshot.map<Widget>((data) => buildListItem(context, data)).toList(),
     );
   }
 
-  buildListItem(BuildContext context, Map data) {
-    // final row = Anket.fromMap(data); // asıl kod
-    final row = Anket.fromMap(data as Map<String, dynamic>, reference: sahteSnapshot);
+  buildListItem(BuildContext context, DocumentSnapshot data) {
+    final row = Anket.fromSnapshot(data);
     return Padding(
       key: ValueKey(row.isim),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -67,12 +79,15 @@ class SurveyListState extends State{
         child: ListTile(
           title: Text(row.isim),
           trailing: Text(row.oy.toString()),
-          onTap: () => print(row.isim),
+          onTap: () => firebaseInstance.runTransaction((transaction) async{
+            final freshSnapshot = await transaction.get(row.reference); // snapshot
+            final fresh = Anket.fromSnapshot(freshSnapshot); // anket
+            transaction.update((row.reference), {"oy" : fresh.oy +1});
+          }),
           ),
         )
       );
   }
-
 }
 
 class Anket{
